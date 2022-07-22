@@ -116,6 +116,42 @@ class Renderer(object):
                 
                 limit += 1
 
+# Determine if the point is in the polygon.
+#Ref: https://en.wikipedia.org/wiki/Even%E2%80%93odd_rule#:~:text=If%20this%20number%20is%20odd,to%20fill%20in%20strange%20ways
+    def gleven_odd(self,x,y,polygon):
+        size = len(polygon)
+        j = size - 1
+        check = False
+
+    # Returns:
+    #   True if the point is in the path or is a corner or on the boundary
+        for i in range(size):
+            if (x == polygon[i][0]) and (y == polygon[i][1]):
+                #Corner
+                return True
+
+            if ((polygon[i][1] > y) != (polygon[j][1] > y)):
+                slope = (x-polygon[i][0])*(polygon[j][1]-polygon[i][1]) - \
+                    (polygon[j][0]-polygon[i][0])*(y-polygon[i][1])
+                if slope == 0:
+                    #Boundary
+                    return True
+
+                if (slope < 0) != (polygon[j][1] < polygon[i][1]):
+                    check = not check
+            j = i
+        return check
+
+    def glFill(self,polygon, clr = None):
+    #Traverse the x-axis
+      for i in range(self.width):
+            #Traverse the y-axis
+            for j in range(self.height):
+                #It calls the algorithm even odd 
+                if self.gleven_odd(i, j, polygon):
+                    #If the return is true it change the color of the pixel
+                    self.glPoint(i, j, clr)
+            
 #Function to define image 
     def glFinish(self, filename):
         with open(filename,"wb") as file:
