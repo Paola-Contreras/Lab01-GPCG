@@ -144,13 +144,13 @@ class Renderer(object):
 
     def glFill(self,polygon, clr = None):
     #Traverse the x-axis
-      for i in range(self.width):
+      for x in range(self.width):
             #Traverse the y-axis
-            for j in range(self.height):
+            for y in range(self.height):
                 #It calls the algorithm even odd 
-                if self.gleven_odd(i, j, polygon):
+                if self.gleven_odd(x, y, polygon):
                     #If the return is true it change the color of the pixel
-                    self.glPoint(i, j, clr)
+                    self.glPoint(x, y, clr)
             
 #Function to define image 
     def glFinish(self, filename):
